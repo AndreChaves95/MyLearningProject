@@ -6,7 +6,7 @@ spring:
     default-timeout: 300 # 5 min
 
   liquibase:
-    changeLog: classpath:/db/changelog/db.changelog-master.yml
+    change-log: classpath:db/changelogs/liquibase-changelog.yml
 
   rabbitmq:
     username: andre.chaves

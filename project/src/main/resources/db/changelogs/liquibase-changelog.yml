@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: changesets/db.project-changelog.yml
+      file: changesets/db.changelog-1.yml
       relativeToChangelogFile: true
