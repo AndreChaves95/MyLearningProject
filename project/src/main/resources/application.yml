@@ -1,0 +1,13 @@
+spring:
+  jdbc:
+    template:
+      fetch-size: 100
+  transaction:
+    default-timeout: 300 # 5 min
+
+  liquibase:
+    changeLog: classpath:/db/changelog/db.changelog-master.yml
+
+  rabbitmq:
+    username: andre.chaves
+    password: password
