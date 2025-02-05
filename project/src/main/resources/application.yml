@@ -3,7 +3,7 @@ spring:
     template:
       fetch-size: 100
   transaction:
-    default-timeout: 300 # 5 min
+    default-timeout: 500
 
   liquibase:
     change-log: classpath:db/changelogs/liquibase-changelog.yml
