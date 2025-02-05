@@ -1,4 +1,4 @@
-package com.andre.learning.project;
+package com.andre.learning.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

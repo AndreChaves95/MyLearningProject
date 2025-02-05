@@ -1,4 +1,4 @@
-package com.andre.learning.project;
+package com.andre.learning;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
