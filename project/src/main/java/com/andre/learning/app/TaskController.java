@@ -1,4 +1,4 @@
-package com.andre.learning.app.controller;
+package com.andre.learning.app;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

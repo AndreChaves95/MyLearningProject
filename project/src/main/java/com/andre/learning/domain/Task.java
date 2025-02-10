@@ -1,7 +1,6 @@
 package com.andre.learning.domain;
 
 import java.sql.Timestamp;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
