@@ -1,9 +1,10 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres'
     environment:
-      - 'POSTGRES_DB='
-      - 'POSTGRES_PASSWORD='
-      - 'POSTGRES_USER='
+      - 'POSTGRES_DB=project'
+      - 'POSTGRES_PASSWORD=andrepassword'
+      - 'POSTGRES_USER=andre'
     ports:
-      - '5432:5431'
+      - '5433:5432'
+# 5433 -> map to my container locally / :5432 -> run container of PostgresSQL
