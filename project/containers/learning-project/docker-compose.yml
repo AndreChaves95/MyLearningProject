@@ -1,0 +1,16 @@
+services:
+  app:
+    image: 'learning-project'
+    volumes:
+      - ./src/main/resources/db/changelogs:/liquibase-changelog.yml
+    ports:
+      - "8080:8080"
+  postgres:
+    image: 'postgres'
+    environment:
+      - 'POSTGRES_DB=project'
+      - 'POSTGRES_PASSWORD=andrepassword'
+      - 'POSTGRES_USER=andre'
+    ports:
+      - '5433:5432'
+# 5433 -> map to my container locally / :5432 -> run container of PostgresSQL

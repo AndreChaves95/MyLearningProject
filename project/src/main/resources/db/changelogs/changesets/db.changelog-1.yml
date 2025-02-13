@@ -4,11 +4,11 @@ databaseChangeLog:
       author: andre.chaves
       changes:
         - createTable:
-            tableName: task
+            tableName: TASK
             columns:
               - column:
                   name: task_id
-                  type: UUID
+                  type: BIGINT
                   constraints:
                     primaryKey: true
                     nullable: false
