@@ -1,13 +1,19 @@
 spring:
+  liquibase:
+    changeLog: classpath:/db/changelogs/liquibase-changelog.yml
   jdbc:
     template:
       fetch-size: 100
   transaction:
     default-timeout: 500
-
-  liquibase:
-    change-log: classpath:db/changelogs/liquibase-changelog.yml
-
-  rabbitmq:
-    username: andre.chaves
-    password: password
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        batch_versioned_data: true
+        batch_fetch_style: PADDED
+        default_batch_fetch_size: 256
+        jdbc:
+          batch_size: 64
+          fetch_size: 512
