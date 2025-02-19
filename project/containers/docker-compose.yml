@@ -7,9 +7,9 @@ services:
     ports:
       - "8080:8080"
   postgres_db:
-    image: 'postgres'
+    image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=project'
+      - 'POSTGRES_DB=postgres_db'
       - 'POSTGRES_PASSWORD=andrepassword'
       - 'POSTGRES_USER=andre'
     ports:

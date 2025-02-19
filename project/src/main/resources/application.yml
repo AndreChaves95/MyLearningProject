@@ -1,4 +1,9 @@
 spring:
+  datasource:
+    name: postgres_db
+    url: jdbc:postgresql://postgres_db:5432/postgres_db
+    username: andre
+    password: andrepassword
   liquibase:
     changeLog: classpath:/db/changelogs/liquibase-changelog.yml
   jdbc:
