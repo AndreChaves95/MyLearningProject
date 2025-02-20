@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class Task {
 
-    private Long id;
+    private Long taskId;
     private String title;
     private String description;
     private boolean completed = false;
