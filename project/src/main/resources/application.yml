@@ -1,7 +1,6 @@
 spring:
   datasource:
-    name: postgres_db
-    url: jdbc:postgresql://postgres_db:5432/postgres_db
+    url: jdbc:postgresql://localhost:5433/postgres_db
     username: andre
     password: andrepassword
   liquibase:
@@ -11,14 +10,3 @@ spring:
       fetch-size: 100
   transaction:
     default-timeout: 500
-  jpa:
-    show-sql: true
-    open-in-view: false
-    properties:
-      hibernate:
-        batch_versioned_data: true
-        batch_fetch_style: PADDED
-        default_batch_fetch_size: 256
-        jdbc:
-          batch_size: 64
-          fetch_size: 512

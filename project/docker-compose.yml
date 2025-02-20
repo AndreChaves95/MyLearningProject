@@ -1,11 +1,11 @@
 services:
-  app_project:
-    image: 'learning-project'
-    build: .
-    volumes:
-      - ./src/main/resources/db/changelogs:/liquibase-changelog.yml
-    ports:
-      - "8080:8080"
+  #app_project:
+  # image: 'learning-project'
+  #  build: .
+  #  volumes:
+  #    - ./src/main/resources/db/changelogs:/liquibase-changelog.yml
+  #  ports:
+  #    - "8080:8080"
   postgres_db:
     image: 'postgres:latest'
     environment:
