@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
 
     // Class that handles the requests and responses
@@ -33,14 +33,19 @@ public class TaskController {
         return "My Learning Project Starting Page!";
     }
 
-    @GetMapping("/task/{id}")
+    @GetMapping("/{id}")
     public Task findById(@PathVariable Long id) {
         return taskService.findById(id);
     }
 
-    @GetMapping("/tasks")
+    @GetMapping("")
     public List<Task> findAll() {
         return taskService.findAll();
+    }
+
+    @GetMapping("/today")
+    public List<Task> findTodayTasks() {
+        return taskService.findTodayTasks();
     }
 
     @ResponseStatus(HttpStatus.CREATED) // This will return status 201 with Created state
@@ -50,15 +55,17 @@ public class TaskController {
         return "Task created successfully!";
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT) // This will return status 204 with No Content state
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public void updateTask(@Valid @RequestBody Task task, @PathVariable Long id) {
         taskService.updateTask(task, id);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-    }
+    // updateCompletedTasks()
 
 }

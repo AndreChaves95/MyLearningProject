@@ -27,6 +27,10 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    public List<Task> findTodayTasks() {
+        return taskRepository.findTodayTasks();
+    }
+
     public void createTask(Task task) throws TaskIdDuplicatedException {
         taskRepository.createTask(task);
     }
