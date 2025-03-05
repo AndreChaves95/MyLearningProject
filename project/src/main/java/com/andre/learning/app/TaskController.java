@@ -3,7 +3,7 @@ package com.andre.learning.app;
 import java.util.List;
 
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
-import com.andre.learning.domain.Task;
+import com.andre.learning.domain.TaskDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
 
     // Class that handles the requests and responses
+    // Here I´m using DTOs for the transportation of data
 
     private final TaskService taskService;
 
@@ -34,24 +35,24 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public Task findById(@PathVariable Long id) {
+    public TaskDTO findById(@PathVariable Long id) {
         return taskService.findById(id);
     }
 
     @GetMapping("")
-    public List<Task> findAll() {
+    public List<TaskDTO> findAll() {
         return taskService.findAll();
     }
 
     @GetMapping("/today")
-    public List<Task> findTodayTasks() {
+    public List<TaskDTO> findTodayTasks() {
         return taskService.findTodayTasks();
     }
 
     @ResponseStatus(HttpStatus.CREATED) // This will return status 201 with Created state
     @PostMapping("/create")
-    public String createTask(@Valid @RequestBody Task task) throws TaskIdDuplicatedException {
-        taskService.createTask(task);
+    public String createTask(@Valid @RequestBody TaskDTO taskDTO) throws TaskIdDuplicatedException {
+        taskService.createTask(taskDTO);
         return "Task created successfully!";
     }
 
@@ -62,8 +63,8 @@ public class TaskController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT) // This will return status 204 with No Content state
     @PutMapping("/{id}")
-    public void updateTask(@Valid @RequestBody Task task, @PathVariable Long id) {
-        taskService.updateTask(task, id);
+    public void updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
+        taskService.updateTask(taskDTO, id);
     }
 
     // updateCompletedTasks()
