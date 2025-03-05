@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.Task;
+import com.andre.learning.domain.TaskDTO;
+import com.andre.learning.mappers.TaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class TaskService {
 
     // Class to connect the controller with the repository
+    // Here I´m using mappers to hide logic from Database connection
 
     private final TaskRepository taskRepository;
 
@@ -19,28 +22,30 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task findById(Long id) {
-        return taskRepository.findById(id);
+    public TaskDTO findById(Long id) {
+        return TaskMapper.mapToDTO(taskRepository.findById(id));
     }
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<TaskDTO> findAll() {
+        return TaskMapper.mapToDTO(taskRepository.findAll());
     }
 
-    public List<Task> findTodayTasks() {
-        return taskRepository.findTodayTasks();
+    public List<TaskDTO> findTodayTasks() {
+        return TaskMapper.mapToDTO(taskRepository.findTodayTasks());
     }
 
-    public void createTask(Task task) throws TaskIdDuplicatedException {
+    public void createTask(TaskDTO taskDTO) throws TaskIdDuplicatedException {
+        Task task = TaskMapper.mapToEntity(taskDTO);
         taskRepository.createTask(task);
-    }
-
-    public void updateTask(Task task, Long id) {
-        taskRepository.updateTask(task, id);
     }
 
     public void deleteTask(Long id) {
         taskRepository.deleteTask(id);
+    }
+
+    public void updateTask(TaskDTO taskDTO, Long id) {
+        Task task = TaskMapper.mapToEntity(taskDTO);
+        taskRepository.updateTask(task, id);
     }
 
 }

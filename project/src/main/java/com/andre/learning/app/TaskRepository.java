@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 public class TaskRepository {
 
     // Class to manage the connection to the database
+    // Here I´m using Task entity to handle data with db
     
     private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
@@ -58,18 +59,6 @@ public class TaskRepository {
         }
     }
 
-    public void updateTask(Task task, Long id) {
-        String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
-        try {
-            jdbcClient.sql(sql)
-                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
-                    .update();
-            logger.info(">>> Task updated successfully!");
-        } catch (Exception exception) {
-            throw new TaskNotFoundException("Task with ID: " + id + " not found! No Update done!");
-        }
-    }
-
     public void deleteTask(Long id) {
         String sql = "DELETE FROM TASK WHERE task_id = :task_id";
         try {
@@ -83,6 +72,18 @@ public class TaskRepository {
             }
         } catch (Exception exception) {
             throw new TaskDeletionErrorException("Error deleting Task!", exception);
+        }
+    }
+
+    public void updateTask(Task task, Long id) {
+        String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
+        try {
+            jdbcClient.sql(sql)
+                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
+                    .update();
+            logger.info(">>> Task updated successfully!");
+        } catch (Exception exception) {
+            throw new TaskNotFoundException("Task with ID: " + id + " not found! No Update done!");
         }
     }
 
