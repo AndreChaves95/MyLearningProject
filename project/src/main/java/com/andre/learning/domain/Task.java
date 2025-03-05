@@ -1,7 +1,6 @@
 package com.andre.learning.domain;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +18,6 @@ public class Task {
     private String description;
     private boolean completed = false;
     private Timestamp createdAt;
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
 }

@@ -6,6 +6,8 @@ import com.andre.learning.customexceptions.TaskDeletionErrorException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.customexceptions.TaskNotFoundException;
 import com.andre.learning.domain.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public class TaskRepository {
 
     // Class to manage the connection to the database
+    
+    private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
     private final JdbcClient jdbcClient;
 
@@ -35,24 +39,32 @@ public class TaskRepository {
                 .list();
     }
 
+    public List<Task> findTodayTasks() {
+        String sql = "SELECT * FROM TASK WHERE DATE(created_at) = CURRENT_DATE OR DATE(updated_at) = CURRENT_DATE";
+        return jdbcClient.sql(sql)
+                .query(Task.class)
+                .list();
+    }
+
     public void createTask(Task task) throws TaskIdDuplicatedException {
         String sql = "INSERT INTO TASK (task_id, title, description, completed, created_at, updated_at) VALUES (?,?,?,?,?,?)";
         try {
             jdbcClient.sql(sql)
                     .params(task.getTaskId(), task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt())
                     .update();
+            logger.info(">>> Task created successfully!");
         } catch (Exception exception) {
             throw new TaskIdDuplicatedException("Task with ID: " + task.getTaskId() + " already exists!");
         }
     }
 
     public void updateTask(Task task, Long id) {
-        String sql = "UPDATE TASK SET title = :title, description = :description, completed = :completed, created_at = :created_at, updated_at = :updated_at WHERE task_id = :task_id";
+        String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
         try {
             jdbcClient.sql(sql)
-                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt())
-                    .param("task_id", id)
+                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
                     .update();
+            logger.info(">>> Task updated successfully!");
         } catch (Exception exception) {
             throw new TaskNotFoundException("Task with ID: " + id + " not found! No Update done!");
         }
@@ -66,6 +78,8 @@ public class TaskRepository {
                     .update();
             if (rowsDeleted == 0) {
                 throw new TaskNotFoundException("Task with ID: " + id + " not found! No Delete done!");
+            } else {
+                logger.info(">>> Task deleted successfully!");
             }
         } catch (Exception exception) {
             throw new TaskDeletionErrorException("Error deleting Task!", exception);
