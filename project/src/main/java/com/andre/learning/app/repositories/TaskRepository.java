@@ -1,4 +1,4 @@
-package com.andre.learning.app;
+package com.andre.learning.app.repositories;
 
 import java.util.List;
 
