@@ -10,3 +10,6 @@ spring:
       fetch-size: 100
   transaction:
     default-timeout: 500
+  rabbitmq:
+    username: andre
+    password: andrepassword
