@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.andre.learning.app.rabbitmq.RabbitMessageProducer;
 import com.andre.learning.app.repositories.TaskRepository;
+import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.Task;
 import com.andre.learning.domain.TaskDTO;
+import com.andre.learning.domain.TaskMessage;
 import com.andre.learning.mappers.TaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,12 +58,13 @@ public class TaskService {
         taskRepository.updateTask(task, id);
     }
 
-    public void completeTask(Long id) {
+    public void completeTask(TaskDTO taskDTO, Long id) throws TaskCompletionException {
+        TaskMessage taskMessage = TaskMapper.mapToMessage(taskDTO);
         Task task = taskRepository.findById(id);
         if (task.isCompleted()) {
             logger.info(">>> Task is already completed!");
         } else {
-            rabbitMessageProducer.sendCompleteTaskMessage(id);
+            rabbitMessageProducer.sendCompleteTaskMessage(taskMessage);
         }
     }
 

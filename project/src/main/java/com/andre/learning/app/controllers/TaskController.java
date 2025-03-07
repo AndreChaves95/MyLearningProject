@@ -3,6 +3,7 @@ package com.andre.learning.app.controllers;
 import java.util.List;
 
 import com.andre.learning.app.services.TaskService;
+import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.TaskDTO;
 import jakarta.validation.Valid;
@@ -70,8 +71,8 @@ public class TaskController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}/complete")
-    public void completeTask(@PathVariable Long id) {
-        taskService.completeTask(id);
+    public void completeTask(@RequestBody TaskDTO taskDTO, @PathVariable Long id) throws TaskCompletionException {
+        taskService.completeTask(taskDTO, id);
     }
 
 }

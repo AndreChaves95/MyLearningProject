@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.andre.learning.domain.Task;
 import com.andre.learning.domain.TaskDTO;
+import com.andre.learning.domain.TaskMessage;
 
 public class TaskMapper {
 
@@ -34,7 +35,25 @@ public class TaskMapper {
         return task;
     }
 
-    public static List<Task> mapToEntity(List<TaskDTO> task) {
-        return task.stream().map(TaskMapper::mapToEntity).toList();
+    public static TaskMessage mapToMessage(TaskDTO taskDTO) {
+        TaskMessage taskMessage = new TaskMessage();
+        taskMessage.setTaskId(taskDTO.getId());
+        taskMessage.setTitle(taskDTO.getTitle());
+        taskMessage.setDescription(taskDTO.getDescription());
+        taskMessage.setCompleted(taskDTO.isCompleted());
+        taskMessage.setCreatedAt(Timestamp.valueOf(taskDTO.getCreatedAt()));
+        taskMessage.setUpdatedAt(Timestamp.valueOf((taskDTO.getUpdatedAt())));
+        return taskMessage;
+    }
+
+    public static TaskDTO mapToDTO(TaskMessage taskMessage) {
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId(taskMessage.getTaskId());
+        taskDTO.setTitle(taskMessage.getTitle());
+        taskDTO.setDescription(taskMessage.getDescription());
+        taskDTO.setCompleted(taskMessage.isCompleted());
+        taskDTO.setCreatedAt(taskMessage.getCreatedAt().toLocalDateTime());
+        taskDTO.setUpdatedAt(taskMessage.getUpdatedAt().toLocalDateTime());
+        return taskDTO;
     }
 }
