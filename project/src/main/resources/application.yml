@@ -11,5 +11,7 @@ spring:
   transaction:
     default-timeout: 500
   rabbitmq:
+    host: localhost
+    port: 5672
     username: andre
     password: andrepassword
