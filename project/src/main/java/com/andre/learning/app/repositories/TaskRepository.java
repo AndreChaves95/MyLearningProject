@@ -1,7 +1,9 @@
-package com.andre.learning.app;
+package com.andre.learning.app.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskDeletionErrorException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.customexceptions.TaskNotFoundException;
@@ -79,11 +81,23 @@ public class TaskRepository {
         String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
         try {
             jdbcClient.sql(sql)
-                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
+                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), LocalDateTime.now(), id)
                     .update();
             logger.info(">>> Task updated successfully!");
         } catch (Exception exception) {
             throw new TaskNotFoundException("Task with ID: " + id + " not found! No Update done!");
+        }
+    }
+
+    public void completeTask(Task task) throws TaskCompletionException {
+        String sql = "UPDATE TASK SET completed = ?, updated_at = ? WHERE task_id = ?";
+        try {
+            jdbcClient.sql(sql)
+                    .params(task.isCompleted(), LocalDateTime.now(), task.getTaskId())
+                    .update();
+            logger.info(">>> Task status updated successfully!");
+        } catch (Exception exception) {
+            throw new TaskCompletionException("Error completing Task from RabbitMQ!", exception);
         }
     }
 
