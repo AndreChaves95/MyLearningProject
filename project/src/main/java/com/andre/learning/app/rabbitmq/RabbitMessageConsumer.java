@@ -27,9 +27,8 @@ class RabbitMessageConsumer {
     @RabbitListener(queues = TASK_COMPLETE_QUEUE)
     public void handleTaskCompletionEventMessage(TaskMessage taskMessage) throws TaskCompletionException {
         try {
-            logger.info(">>> Received message from RabbitMQ!");
+            logger.info(" **** Received RabbitMQ message successfully! **** ");
             taskRepository.completeTask(TaskMapper.mapToEntity(taskMessage));
-            logger.info(">>> Task completion processed successfully!");
         } catch (Exception exception) {
             throw new TaskCompletionException("Error processing message from RabbitMQ!", exception);
         }
