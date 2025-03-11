@@ -43,6 +43,9 @@ public class RabbitConfig {
         return rabbitTemplate;
     }
 
+    // The Jackson2JsonMessageConverter is responsible for converting the Java objects to JSON and vice versa.
+    // The DefaultClassMapper is responsible for mapping the class names to the JSON payload.
+    // By using it, we can specify the trusted packages that the Jackson library can deserialize.
     @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();

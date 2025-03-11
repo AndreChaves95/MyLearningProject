@@ -14,9 +14,9 @@ services:
       - 'POSTGRES_USER=andre'
     ports:
       - '5433:5432'
+  # 5433 -> map to my container locally / :5432 -> run container of PostgresSQL
 
   rabbitmq:
     image: rabbitmq
     ports:
-      - 5672:5672
-# 5433 -> map to my container locally / :5432 -> run container of PostgresSQL
+      - "5672:5672"
