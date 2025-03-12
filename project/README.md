@@ -22,7 +22,7 @@
 
 
 ## How to run the project
-- On docker-compose file run service 'postgres_db' to start the database
+- On docker-compose file run services to start 'postgres_db' and 'rabbitmq' containers
 - Run ProjectApplication.java to start the application
 
 
@@ -41,6 +41,15 @@
 #### -> @PathVariable vs @PathParam
 - @PathParam is from JAX-RS, so it can only be used on REST
 - @PathVariable is from Spring, so it works on both REST and MVC
+
+
+### RabbitMQ configurations
+- Direct-Exchange -> Send message to a specific queue: "rabbit-exchange"
+- Queue -> Queue to receive messages: "andre.rabbit-task-queue"
+- Binding -> Bind the queue to the exchange using a routing key: "routing-key"
+- Producer -> Send message to the exchange
+- Consumer -> Receive message from the queue
+- Dead Letter Exchange -> Exchange to send messages that could not be processed by the consumer
 
 
 

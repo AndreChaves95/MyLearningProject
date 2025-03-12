@@ -1,5 +1,8 @@
 package com.andre.learning.app.rabbitmq;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -15,10 +18,20 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     public static final String TASK_COMPLETE_QUEUE = "andre.rabbit-task-queue";
+    public static final String DEAD_LETTER_QUEUE = "andre.dead-letter-queue";
+    public static final String DEAD_LETTER_EXCHANGE = "andre.dead-letter-exchange";
 
+    // The Queue is responsible for holding the messages until they are consumed.
     @Bean
     public Queue queue() {
-        return new Queue(TASK_COMPLETE_QUEUE, false); //Create a new Queue with the name 'hello-rabbit'
+        Map<String, Object> args = new HashMap<>();
+        args.put("dlq-exchange", DEAD_LETTER_EXCHANGE);
+        return new Queue(TASK_COMPLETE_QUEUE, true, false, false, args);
+    }
+
+    @Bean
+    public Queue deadLetterQueue() {
+        return new Queue(DEAD_LETTER_QUEUE, true);
     }
 
     // The Exchange is responsible for routing the messages to the correct Queue.
@@ -27,10 +40,21 @@ public class RabbitConfig {
         return new DirectExchange("rabbit-exchange");
     }
 
+    // The Dead Letter Exchange is responsible for routing the messages to the Dead Letter Queue.
+    @Bean
+    public DirectExchange deadLetterExchange() {
+        return new DirectExchange(DEAD_LETTER_EXCHANGE);
+    }
+
     // The Binding is responsible for bind the Queue to the Exchange.
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with("routing-key");
+    }
+
+    @Bean
+    public Binding deadLetterBinding(Queue deadLetterQueue, DirectExchange deadLetterExchange) {
+        return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange).with("dlq-routing-key");
     }
 
     // The ConnectionFactory is responsible for creating connections to the RabbitMQ broker.
