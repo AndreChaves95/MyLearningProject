@@ -1,22 +1,46 @@
 services:
-  #app_project:
-  # image: 'learning-project'
-  #  build: .
-  #  volumes:
-  #    - ./src/main/resources/db/changelogs:/liquibase-changelog.yml
-  #  ports:
-  #    - "8080:8080"
   postgres_db:
+    container_name: postgres_service
     image: 'postgres:latest'
     environment:
       - 'POSTGRES_DB=postgres_db'
-      - 'POSTGRES_PASSWORD=andrepassword'
       - 'POSTGRES_USER=andre'
+      - 'POSTGRES_PASSWORD=andrepassword'
     ports:
-      - '5433:5432'
-  # 5433 -> map to my container locally / :5432 -> run container of PostgresSQL
+      - '5433:5432'    # 5433 -> map to my container locally / :5432 -> run container of PostgresSQL
+    networks:
+      - app_network
 
   rabbitmq:
-    image: rabbitmq
+    container_name: rabbitmq_service
+    image: harbor.emea.ocp.int.kn/dockerhub/library/rabbitmq:4.0.6-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=andre
+      - RABBITMQ_DEFAULT_PASS=andrepassword
     ports:
       - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  app:
+    container_name: project_app_service
+    image: 'app_image:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres_db
+      - rabbitmq
+    networks:
+      - app_network
+
+networks:
+  app_network:
