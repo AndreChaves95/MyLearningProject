@@ -1,17 +1,21 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres_db
+    url: jdbc:postgresql://postgres_service:5432/postgres_db
     username: andre
     password: andrepassword
+
   liquibase:
     changeLog: classpath:/db/changelogs/liquibase-changelog.yml
+
   jdbc:
     template:
       fetch-size: 100
-  transaction:
-    default-timeout: 500
+
   rabbitmq:
-    host: localhost
+    host: rabbitmq_service
     port: 5672
     username: andre
     password: andrepassword
+
+server:
+  port: 8080
