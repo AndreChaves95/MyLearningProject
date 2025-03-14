@@ -81,11 +81,11 @@ public class TaskRepository {
         String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
         try {
             jdbcClient.sql(sql)
-                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), LocalDateTime.now(), id)
+                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
                     .update();
             logger.info(">>> Task updated successfully!");
         } catch (Exception exception) {
-            throw new TaskNotFoundException("Task with ID: " + id + " not found! No Update done!");
+            logger.error(">>> Error updating Task!", exception);
         }
     }
 
@@ -95,7 +95,7 @@ public class TaskRepository {
             jdbcClient.sql(sql)
                     .params(task.isCompleted(), LocalDateTime.now(), task.getTaskId())
                     .update();
-            logger.info(">>> Task status updated successfully!");
+            logger.info(">>> Task completed successfully!");
         } catch (Exception exception) {
             throw new TaskCompletionException("Error completing Task from RabbitMQ!", exception);
         }

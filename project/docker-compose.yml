@@ -30,7 +30,7 @@ services:
 
   app:
     container_name: project_app_service
-    image: 'app_image:latest'
+    image: app_project
     build:
       context: .
       dockerfile: Dockerfile

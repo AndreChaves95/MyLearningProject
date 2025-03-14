@@ -27,18 +27,26 @@ public class TaskMapper {
     public static Task mapToEntity(TaskDTO taskDTO) {
         Task task = new Task();
         task.setTaskId(taskDTO.getId());
-        task.setTitle(taskDTO.getTitle());
-        task.setDescription(taskDTO.getDescription());
+        if (taskDTO.getTitle() != null) {
+            task.setTitle(taskDTO.getTitle());
+        }
+        if (taskDTO.getDescription() != null) {
+            task.setDescription(taskDTO.getDescription());
+        }
         task.setCompleted(taskDTO.isCompleted());
         task.setCreatedAt(Timestamp.valueOf(taskDTO.getCreatedAt()));
-        task.setUpdatedAt(Timestamp.valueOf((taskDTO.getUpdatedAt())));
+        task.setUpdatedAt(Timestamp.valueOf(taskDTO.getUpdatedAt()));
         return task;
     }
 
     public static TaskMessage mapToMessage(TaskDTO taskDTO) {
         TaskMessage taskMessage = new TaskMessage();
-        taskMessage.setTitle(taskDTO.getTitle());
-        taskMessage.setDescription(taskDTO.getDescription());
+        if (taskDTO.getTitle() != null) {
+            taskMessage.setTitle(taskDTO.getTitle());
+        }
+        if (taskDTO.getDescription() != null) {
+            taskMessage.setDescription(taskDTO.getDescription());
+        }
         taskMessage.setCompleted(taskDTO.isCompleted());
         taskMessage.setCreatedAt(Timestamp.valueOf(taskDTO.getCreatedAt()));
         taskMessage.setUpdatedAt(Timestamp.valueOf((taskDTO.getUpdatedAt())));
