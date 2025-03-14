@@ -6,6 +6,7 @@ import com.andre.learning.app.rabbitmq.RabbitMessageProducer;
 import com.andre.learning.app.repositories.TaskRepository;
 import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
+import com.andre.learning.customexceptions.TaskNotFoundException;
 import com.andre.learning.domain.Task;
 import com.andre.learning.domain.TaskDTO;
 import com.andre.learning.domain.TaskMessage;
@@ -54,6 +55,9 @@ public class TaskService {
     }
 
     public void updateTask(TaskDTO taskDTO, Long id) {
+        if (taskRepository.findById(id) == null) {
+            throw new TaskNotFoundException(">>> Task not found with id: " + id);
+        }
         Task task = TaskMapper.mapToEntity(taskDTO);
         taskRepository.updateTask(task, id);
     }
