@@ -81,7 +81,7 @@ public class TaskRepository {
         String sql = "UPDATE TASK SET title = ?, description = ?, completed = ?, created_at = ?, updated_at = ? WHERE task_id = ?";
         try {
             jdbcClient.sql(sql)
-                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), LocalDateTime.now(), id)
+                    .params(task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt(), id)
                     .update();
             logger.info(">>> Task updated successfully!");
         } catch (Exception exception) {

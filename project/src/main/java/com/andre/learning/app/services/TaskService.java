@@ -61,7 +61,7 @@ public class TaskService {
     public void completeTask(TaskDTO taskDTO, Long id) throws TaskCompletionException {
         Task task = taskRepository.findById(id);
         if (task == null) {
-            throw new TaskCompletionException("Task not found with id: " + id);
+            throw new TaskCompletionException(">>> Task not found with id: " + id);
         }
         if (task.isCompleted()) {
             logger.info(">>> Task is already completed!");
