@@ -7,6 +7,7 @@ import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.TaskDTO;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    @Autowired
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
