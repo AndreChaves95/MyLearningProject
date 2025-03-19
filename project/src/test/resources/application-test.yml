@@ -14,7 +14,7 @@ spring:
       simple:
         auto-startup: true
   liquibase:
-    enabled: false
+    enabled: true
 
 server:
   port: 0
