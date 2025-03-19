@@ -42,7 +42,7 @@ class TaskServiceTests {
     void testFindById() {
         Task task = TestData.buildTask(1);
         when(taskRepository.findById(anyLong())).thenReturn(task);
-        TaskDTO result = taskService.findById(1L);
+        TaskDTO result = taskService.findById(task.getTaskId());
         assertEquals(TaskMapper.mapToDTO(task), result);
     }
 
@@ -88,7 +88,7 @@ class TaskServiceTests {
         Task task = TaskMapper.mapToEntity(taskDTO);
         when(taskRepository.findById(anyLong())).thenReturn(task);
         doNothing().when(taskRepository).updateTask(task, taskDTO.getId());
-        assertDoesNotThrow(() -> taskService.updateTask(taskDTO, 1L));
+        assertDoesNotThrow(() -> taskService.updateTask(taskDTO, taskDTO.getId()));
     }
 
     @Test
@@ -97,6 +97,6 @@ class TaskServiceTests {
         Task task = TestData.buildTask(1);
         when(taskRepository.findById(anyLong())).thenReturn(task);
         doNothing().when(rabbitMessageProducer).sendCompleteTaskMessage(any());
-        assertDoesNotThrow(() -> taskService.completeTask(taskDTO, 1L));
+        assertDoesNotThrow(() -> taskService.completeTask(taskDTO, taskDTO.getId()));
     }
 }
