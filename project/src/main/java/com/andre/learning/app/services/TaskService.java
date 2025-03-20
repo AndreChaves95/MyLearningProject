@@ -62,18 +62,18 @@ public class TaskService {
         taskRepository.updateTask(task, id);
     }
 
-    public void completeTask(TaskDTO taskDTO, Long id) throws TaskCompletionException {
+    public String completeTask(TaskDTO taskDTO, Long id) throws TaskCompletionException {
         Task task = taskRepository.findById(id);
         if (task == null) {
-            throw new TaskCompletionException(">>> Task not found with id: " + id);
+            throw new TaskNotFoundException(">>> Task not found with id: " + id);
         }
         if (task.isCompleted()) {
-            logger.info(">>> Task is already completed!");
-            return;
+            return "Task is already completed!";
         }
         TaskMessage taskMessage = TaskMapper.mapToMessage(taskDTO);
         taskMessage.setTaskId(id);
         rabbitMessageProducer.sendCompleteTaskMessage(taskMessage);
+        return "Task completed successfully!";
     }
 
 }

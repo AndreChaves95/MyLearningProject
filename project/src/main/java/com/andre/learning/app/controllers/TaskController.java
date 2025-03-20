@@ -7,6 +7,7 @@ import com.andre.learning.customexceptions.TaskCompletionException;
 import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.TaskDTO;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    @Autowired
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
@@ -59,20 +61,20 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public String deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
+        return "Task deleted successfully!";
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT) // This will return status 204 with No Content state
     @PutMapping("/{id}")
-    public void updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
+    public String updateTask(@Valid @RequestBody TaskDTO taskDTO, @PathVariable Long id) {
         taskService.updateTask(taskDTO, id);
+        return "Task updated successfully!";
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}/complete")
-    public void completeTask(@RequestBody TaskDTO taskDTO, @PathVariable Long id) throws TaskCompletionException {
-        taskService.completeTask(taskDTO, id);
+    public String completeTask(@RequestBody TaskDTO taskDTO, @PathVariable Long id) throws TaskCompletionException {
+        return taskService.completeTask(taskDTO, id);
     }
 
 }

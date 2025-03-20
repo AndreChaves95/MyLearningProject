@@ -23,9 +23,9 @@ public class RabbitMessageProducer {
     public void sendCompleteTaskMessage(TaskMessage taskMessage) throws TaskCompletionException {
         try {
             rabbitTemplate.convertAndSend("rabbit-exchange", "routing-key", taskMessage); // Send message to RabbitMQ
-            logger.info(" **** RabbitMQ message sent successfully! **** ");
+            logger.info("***** RabbitMQ message sent successfully! *****");
         } catch (Exception exception) {
-            throw new TaskCompletionException("Error sending task completion message to RabbitMQ!", exception);
+            throw new TaskCompletionException("Error sending message to RabbitMQ to complete task!", exception);
         }
     }
 

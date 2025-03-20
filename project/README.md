@@ -52,6 +52,18 @@
 - Dead Letter Exchange -> Exchange to send messages that could not be processed by the consumer
 
 
+### Testing
+- Unit Test -> Test a single unit of code
+- Integration Test -> Test multiple units of code together
+- @SpringBootTest -> Test the application
+- @AutoConfigureMockMvc -> Configure the MockMvc
+
+#### Unit Test
+- Coverage of TaskController, TaskService and TaskRepository classes
+- Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test 
+
+#### Integration Test
+
 
 ## Example of Requests
 - POST:
@@ -60,24 +72,24 @@
     "title": "Task-1",
     "description": "This is task number 1",
     "completed": false,
-    "createdAt": "2025-03-26T11:11:00",
-    "updatedAt": "2025-03-26T11:11:00"
+    "createdAt": "2025-03-27T11:11:00",
+    "updatedAt": "2025-03-27T11:11:00"
 }
 {
     "id": 2,
     "title": "Task-2",
     "description": "This is task number 2",
     "completed": false,
-    "createdAt": "2025-03-27T12:12:00",
-    "updatedAt": "2025-03-27T12:12:00"
+    "createdAt": "2025-03-26T12:12:00",
+    "updatedAt": "2025-03-28T12:12:00"
 }
 {
     "id": 3,
     "title": "Task-3",
     "description": "This is task number 3",
     "completed": false,
-    "createdAt": "2025-03-26T13:13:00",
-    "updatedAt": "2025-03-26T13:13:00"
+    "createdAt": "2025-03-27T13:13:00",
+    "updatedAt": "2025-03-27T13:13:00"
 }
 
 - PUT:
@@ -85,14 +97,14 @@
     "title": "Task-22",
     "description": "This is task number 22",
     "createdAt": "2025-03-26T12:12:00",
-    "updatedAt": "2025-03-26T12:22:00"
+    "updatedAt": "2025-03-27T12:22:00"
 }
 
 - PUT (complete):
 {
     "completed": true,
-    "createdAt": "2025-03-26T13:33:00",
-    "updatedAt": "2025-03-26T14:44:00"
+    "createdAt": "2025-03-27T13:33:00",
+    "updatedAt": "2025-03-27T14:44:00"
 }
 
 
