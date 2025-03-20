@@ -22,6 +22,17 @@ public final class TestData {
         return taskDTO;
     }
 
+    public static TaskDTO buildCompletedTaskDto(int index) {
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId((long) index);
+        taskDTO.setTitle("Task " + index);
+        taskDTO.setDescription("Task Description");
+        taskDTO.setCompleted(true);
+        taskDTO.setCreatedAt(LocalDateTime.now());
+        taskDTO.setUpdatedAt(LocalDateTime.now());
+        return taskDTO;
+    }
+
     public static Task buildTask(int index) {
         Task task = new Task();
         task.setTaskId((long) index);
