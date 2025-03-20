@@ -52,6 +52,18 @@
 - Dead Letter Exchange -> Exchange to send messages that could not be processed by the consumer
 
 
+### Testing
+- Unit Test -> Test a single unit of code
+- Integration Test -> Test multiple units of code together
+- @SpringBootTest -> Test the application
+- @AutoConfigureMockMvc -> Configure the MockMvc
+
+#### Unit Test
+- Coverage of TaskController, TaskService and TaskRepository classes
+- Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test 
+
+#### Integration Test
+
 
 ## Example of Requests
 - POST:

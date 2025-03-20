@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
-public class TaskRepositoryTests {
+class TaskRepositoryTests {
 
     @Mock
     private JdbcClient jdbcClient;
