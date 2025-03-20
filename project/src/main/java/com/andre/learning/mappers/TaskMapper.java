@@ -9,6 +9,9 @@ import com.andre.learning.domain.TaskMessage;
 
 public class TaskMapper {
 
+    private TaskMapper() {
+    }
+
     public static TaskDTO mapToDTO(Task task) {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(task.getTaskId());
