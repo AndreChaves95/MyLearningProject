@@ -54,15 +54,15 @@
 
 ### Testing
 - Unit Test -> Test a single unit of code
-- Integration Test -> Test multiple units of code together
-- @SpringBootTest -> Test the application
-- @AutoConfigureMockMvc -> Configure the MockMvc
+- Integration Test -> Test interactions between different components of the application
 
 #### Unit Test
 - Coverage of TaskController, TaskService and TaskRepository classes
-- Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test 
 
 #### Integration Test
+- Coverage of TaskController class interacting with the database
+- Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test
+- Use of @SpringBootTest and @AutoConfigureMockMvc annotations to test the application
 
 
 ## Example of Requests
