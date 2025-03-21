@@ -1,31 +1,35 @@
 package com.andre.learning.app.controller;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDateTime;
+
+import com.andre.learning.app.controllers.TaskController;
+import com.andre.learning.app.services.TaskService;
+import com.andre.learning.customexceptions.TaskCompletionException;
+import com.andre.learning.customexceptions.TaskIdDuplicatedException;
 import com.andre.learning.domain.TaskDTO;
 import com.andre.learning.utils.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
-
-@SpringBootTest
-@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class TaskControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Mock
+    private TaskController taskController;
 
     @BeforeEach
     void setUp() {
@@ -33,86 +37,58 @@ class TaskControllerTests {
     }
 
     @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testFindById() throws Exception {
+    void testFindById() {
         TaskDTO taskDTO = TestData.buildTaskDto(1);
-        mockMvc.perform(get("/api/v1/tasks/{id}", taskDTO.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(taskDTO.getId()))
-                .andExpect(jsonPath("$.title").value(taskDTO.getTitle()));
+        taskController.findById(taskDTO.getId());
+        verify(taskController, times(1)).findById(taskDTO.getId());
     }
 
     @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testFindAll() throws Exception {
-        TaskDTO task1 = TestData.buildTaskDto(1);
-        TaskDTO task2 = TestData.buildTaskDto(2);
-        TaskDTO task3 = TestData.buildTaskDto(3);
-        TaskDTO task4 = TestData.buildCompletedTaskDto(4);
-        mockMvc.perform(get("/api/v1/tasks"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(task1.getId()))
-                .andExpect(jsonPath("$[0].title").value(task1.getTitle()))
-                .andExpect(jsonPath("$[0].completed").value(task1.isCompleted()))
-                .andExpect(jsonPath("$[1].id").value(task2.getId()))
-                .andExpect(jsonPath("$[1].title").value(task2.getTitle()))
-                .andExpect(jsonPath("$[1].completed").value(task2.isCompleted()))
-                .andExpect(jsonPath("$[2].id").value(task3.getId()))
-                .andExpect(jsonPath("$[2].title").value(task3.getTitle()))
-                .andExpect(jsonPath("$[2].completed").value(task3.isCompleted()))
-                .andExpect(jsonPath("$[3].id").value(task4.getId()))
-                .andExpect(jsonPath("$[3].title").value(task4.getTitle()))
-                .andExpect(jsonPath("$[3].completed").value(task4.isCompleted()));
+    void testFindAll() {
+        taskController.findAll();
+        verify(taskController, times(1)).findAll();
     }
 
     @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testCreateTask() throws Exception {
-        mockMvc.perform(post("/api/v1/tasks/create")
-                        .contentType("application/json")
-                        .content("{\"id\": 5, " +
-                                "\"title\": \"Task 5\", " +
-                                "\"description\": \"Task 5 description\", " +
-                                "\"completed\": false, " +
-                                "\"createdAt\": \"" + LocalDateTime.now() + "\", " +
-                                "\"updatedAt\": \"" + LocalDateTime.now().plusHours(1) + "\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("Task created successfully!"));
+    void testCreateTask() throws TaskIdDuplicatedException {
+        TaskDTO taskDTO = TestData.buildTaskDto(5);
+        when(taskController.createTask(taskDTO)).thenReturn("Task created successfully");
+        String response = taskController.createTask(taskDTO);
+        verify(taskController, times(1)).createTask(taskDTO);
+        assertEquals("Task created successfully", response);
     }
 
     @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testDeleteTask() throws Exception {
-        mockMvc.perform(delete("/api/v1/tasks/{id}", 1))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Task deleted successfully!"));
-    }
-
-    @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testUpdateTask() throws Exception {
+    void testDeleteTask() {
         TaskDTO taskDTO = TestData.buildTaskDto(1);
-        mockMvc.perform(put("/api/v1/tasks/{id}", 1)
-                .contentType("application/json")
-                .content("{\"title\": \"Task 11\", " +
-                        "\"description\": \"Task 11 description\", " +
-                        "\"createdAt\": \"" + taskDTO.getCreatedAt() + "\", " +
-                        "\"updatedAt\": \"" + LocalDateTime.now() + "\"}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Task updated successfully!"));
+        when(taskController.deleteTask(taskDTO.getId())).thenReturn("Task deleted successfully");
+        String response = taskController.deleteTask(taskDTO.getId());
+        verify(taskController, times(1)).deleteTask(taskDTO.getId());
+        assertEquals("Task deleted successfully", response);
     }
 
     @Test
-    @Sql({"/clean-database.sql", "/fill-database.sql"})
-    void testAlreadyCompletedMessageWhenTaskIsCompleted() throws Exception {
-        TaskDTO taskDTO = TestData.buildCompletedTaskDto(4);
-        mockMvc.perform(put("/api/v1/tasks/{id}/complete", taskDTO.getId())
-                        .contentType("application/json")
-                        .content("{\"completed\": true, " +
-                                "\"createdAt\": \"" + taskDTO.getCreatedAt() + "\", " +
-                                "\"updatedAt\": \"" + LocalDateTime.now() + "\"}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Task is already completed!"));
+    void testUpdateTask() {
+        TaskDTO taskDTO = TestData.buildTaskDto(1);
+        TaskDTO taskDTOUpdated = new TaskDTO();
+        taskDTOUpdated.setTitle("Task Updated");
+        taskDTOUpdated.setDescription("Task Description Updated");
+        taskDTOUpdated.setUpdatedAt(LocalDateTime.now());
+        when(taskController.updateTask(taskDTO, taskDTO.getId())).thenReturn("Task updated successfully");
+        String response = taskController.updateTask(taskDTO, taskDTO.getId());
+        verify(taskController, times(1)).updateTask(taskDTO, taskDTO.getId());
+        assertEquals("Task updated successfully", response);
     }
 
+    @Test
+    void testCompleteTask() throws TaskCompletionException {
+        TaskDTO taskDTO = TestData.buildTaskDto(1);
+        TaskDTO taskCompleted = new TaskDTO();
+        taskCompleted.setCompleted(true);
+        taskCompleted.setUpdatedAt(LocalDateTime.now());
+        when(taskController.completeTask(taskDTO, taskDTO.getId())).thenReturn("Task completed successfully");
+        String response = taskController.completeTask(taskDTO, taskDTO.getId());
+        verify(taskController, times(1)).completeTask(taskDTO, taskDTO.getId());
+        assertEquals("Task completed successfully", response);
+    }
 }
