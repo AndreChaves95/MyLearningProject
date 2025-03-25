@@ -13,7 +13,7 @@ services:
 
   rabbitmq:
     container_name: rabbitmq_service
-    image: harbor.emea.ocp.int.kn/dockerhub/library/rabbitmq:4.0.6-management
+    image: rabbitmq:management
     environment:
       - RABBITMQ_DEFAULT_USER=andre
       - RABBITMQ_DEFAULT_PASS=andrepassword
