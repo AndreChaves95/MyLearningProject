@@ -63,6 +63,9 @@
 - Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test 
 
 #### Integration Test
+- Coverage of TaskController class interacting with the database
+- Use of clean-database.sql and fill-database.sql files to clean and fill the database before each test
+- Use of @SpringBootTest and @AutoConfigureMockMvc annotations to test the application
 
 
 ## Example of Requests
