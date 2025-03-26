@@ -22,8 +22,8 @@
 
 
 ## How to run the project
-- On docker-compose file run services to start 'postgres_db' and 'rabbitmq' containers
-- Run ProjectApplication.java to start the application
+- On docker-compose.yml file run services to start all the containers needed (rabbitmq, postgres, application)
+- Or on terminal (inside project) run docker-compose up
 
 
 ## Concepts
