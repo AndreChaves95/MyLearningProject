@@ -43,6 +43,10 @@
 - @PathVariable is from Spring, so it works on both REST and MVC
 
 
+#### ResponseEntity
+- Use of ResponseEntity<Object> on Create Task method as best practice
+
+
 ### RabbitMQ configurations
 - Direct-Exchange -> Send message to a specific queue: "rabbit-exchange"
 - Queue -> Queue to receive messages: "andre.rabbit-task-queue"
