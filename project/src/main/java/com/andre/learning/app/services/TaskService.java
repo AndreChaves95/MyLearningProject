@@ -45,9 +45,10 @@ public class TaskService {
         return TaskMapper.mapToDTO(taskRepository.findTodayTasks());
     }
 
-    public void createTask(TaskDTO taskDTO) throws TaskIdDuplicatedException {
+    public TaskDTO createTask(TaskDTO taskDTO) throws TaskIdDuplicatedException {
         Task task = TaskMapper.mapToEntity(taskDTO);
-        taskRepository.createTask(task);
+        Task taskSaved = taskRepository.createTask(task);
+        return TaskMapper.mapToDTO(taskSaved);
     }
 
     public void deleteTask(Long id) {
