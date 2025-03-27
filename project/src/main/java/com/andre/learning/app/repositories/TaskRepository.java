@@ -49,13 +49,14 @@ public class TaskRepository {
                 .list();
     }
 
-    public void createTask(Task task) throws TaskIdDuplicatedException {
+    public Task createTask(Task task) throws TaskIdDuplicatedException {
         String sql = "INSERT INTO TASK (task_id, title, description, completed, created_at, updated_at) VALUES (?,?,?,?,?,?)";
         try {
             jdbcClient.sql(sql)
                     .params(task.getTaskId(), task.getTitle(), task.getDescription(), task.isCompleted(), task.getCreatedAt(), task.getUpdatedAt())
                     .update();
             logger.info(">>> Task created successfully!");
+            return task;
         } catch (Exception exception) {
             throw new TaskIdDuplicatedException("Task with ID: " + task.getTaskId() + " already exists!");
         }

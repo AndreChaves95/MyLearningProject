@@ -21,6 +21,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,10 +54,10 @@ class TaskControllerTests {
     @Test
     void testCreateTask() throws TaskIdDuplicatedException {
         TaskDTO taskDTO = TestData.buildTaskDto(5);
-        when(taskController.createTask(taskDTO)).thenReturn("Task created successfully");
-        String response = taskController.createTask(taskDTO);
+        when(taskController.createTask(taskDTO)).thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(taskDTO));
+        ResponseEntity<TaskDTO> response = taskController.createTask(taskDTO);
         verify(taskController, times(1)).createTask(taskDTO);
-        assertEquals("Task created successfully", response);
+        assertEquals(taskDTO, response.getBody());
     }
 
     @Test

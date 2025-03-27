@@ -74,10 +74,15 @@ class TaskIntegrationTests {
                                 "\"title\": \"Task 5\", " +
                                 "\"description\": \"Task 5 description\", " +
                                 "\"completed\": false, " +
-                                "\"createdAt\": \"" + LocalDateTime.now() + "\", " +
-                                "\"updatedAt\": \"" + LocalDateTime.now().plusHours(1) + "\"}"))
+                                "\"createdAt\": \"2025-03-27T17:00:00\", " +
+                                "\"updatedAt\": \"2025-03-27T17:10:00\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(content().string("Task created successfully!"));
+                .andExpect(content().string("{\"id\":5," +
+                        "\"title\":\"Task 5\"," +
+                        "\"description\":\"Task 5 description\"," +
+                        "\"completed\":false," +
+                        "\"createdAt\":\"2025-03-27T17:00:00\"," +
+                        "\"updatedAt\":\"2025-03-27T17:10:00\"}"));
     }
 
     @Test

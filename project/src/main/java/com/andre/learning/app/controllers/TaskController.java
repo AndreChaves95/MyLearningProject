@@ -9,6 +9,7 @@ import com.andre.learning.domain.TaskDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,11 +54,10 @@ public class TaskController {
         return taskService.findTodayTasks();
     }
 
-    @ResponseStatus(HttpStatus.CREATED) // This will return status 201 with Created state
     @PostMapping("/create")
-    public String createTask(@Valid @RequestBody TaskDTO taskDTO) throws TaskIdDuplicatedException {
+    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDTO) throws TaskIdDuplicatedException {
         taskService.createTask(taskDTO);
-        return "Task created successfully!";
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskDTO);
     }
 
     @DeleteMapping("/{id}")

@@ -72,8 +72,9 @@ class TaskServiceTests {
     void testCreateTask() throws TaskIdDuplicatedException {
         TaskDTO taskDTO = TestData.buildTaskDto(1);
         Task task = TaskMapper.mapToEntity(taskDTO);
-        doNothing().when(taskRepository).createTask(task);
-        assertDoesNotThrow(() -> taskService.createTask(taskDTO));
+        when(taskRepository.createTask(any())).thenReturn(task);
+        TaskDTO result = taskService.createTask(taskDTO);
+        assertEquals(taskDTO, result);
     }
 
     @Test
